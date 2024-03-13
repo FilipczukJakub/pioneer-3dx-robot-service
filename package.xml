@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>pioneer_controller</name>
+  <version>0.0.0</version>
+  <description>The pioneer_controller package</description>
+
+  <maintainer email="vboxuser@todo.todo">vboxuser</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>rospy</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <exec_depend>rospy</exec_depend>
+
+  <build_depend>geometry_msgs</build_depend>
+  <build_export_depend>geometry_msgs</build_export_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+
+  <build_depend>std_msgs</build_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <exec_depend>std_msgs</exec_depend>
+
+  <build_depend>websockets</build_depend>
+  <build_export_depend>websockets</build_export_depend>
+  <exec_depend>websockets</exec_depend>
+
+  <build_depend>asyncio</build_depend>
+  <build_export_depend>asyncio</build_export_depend>
+  <exec_depend>asyncio</exec_depend>
+
+  <build_depend>socket</build_depend>
+  <build_export_depend>socket</build_export_depend>
+  <exec_depend>socket</exec_depend>
+
+  <build_depend>signal</build_depend>
+  <build_export_depend>signal</build_export_depend>
+  <exec_depend>signal</exec_depend>
+
+  <build_depend>ipaddress</build_depend>
+  <build_export_depend>ipaddress</build_export_depend>
+  <exec_depend>ipaddress</exec_depend>fcntl
+
+  <build_depend>fcntl</build_depend>
+  <build_export_depend>fcntl</build_export_depend>
+  <exec_depend>fcntl</exec_depend>
+
+  <build_depend>struct</build_depend>
+  <build_export_depend>struct</build_export_depend>
+  <exec_depend>struct</exec_depend>
+
+  <build_depend>threading</build_depend>
+  <build_export_depend>threading</build_export_depend>
+  <exec_depend>threading</exec_depend>
+
+  <build_depend>json</build_depend>
+  <build_export_depend>json</build_export_depend>
+  <exec_depend>json</exec_depend>
+
+  <build_depend>sensor_msgs</build_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>
