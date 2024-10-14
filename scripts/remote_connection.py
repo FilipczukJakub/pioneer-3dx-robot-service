@@ -87,7 +87,8 @@ def broadcast_server(ip):
 
 async def start_controlling_service():
     global global_stop
-    ip = (([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0]    
+#    ip = (([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("8.8.8.8", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0]    
+    ip = socket.gethostbyname("host.docker.internal")
     broadcast_thread = threading.Thread(target=broadcast_server,args=(ip,))  
     controlled_move_thread = threading.Thread(target=controlled_move,args=())
     broadcast_thread.start()
