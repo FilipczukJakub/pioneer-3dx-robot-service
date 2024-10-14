@@ -38,7 +38,7 @@ async def echo(websocket):
         msg = toTwist(jsonString)
 
 async def main_server(ip,stop):
-    async with websockets.serve(echo,ip,8765):
+    async with websockets.serve(echo,'0.0.0.0',8765):
         print("server is listening on " + ip + ":8765")
         await stop
     print('server stopped')
