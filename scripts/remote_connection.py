@@ -40,7 +40,7 @@ async def echo(websocket):
 
 async def main_server(ip,stop):
     async with websockets.serve(echo,'0.0.0.0',8765):
-        print("server is listening on " + ip + ":8765")
+        print("server is listening on " + str(ip) + ":8765")
         await stop
     print('server stopped')
 
@@ -80,7 +80,7 @@ def broadcast_server(ip):
         data,adres= s.recvfrom(1024)
         message = data.decode('ascii')
         if(message == 'ip_request'):
-            print('received broadcast request for my ip ' + data.decode('ascii') + ip)
+            print('received broadcast request for my ip ' + data.decode('ascii') + str(ip))
             s.sendto(ip.encode('ascii'),(adres[0],adres[1]))
         elif(message == 'stop'):
             print('emergancy stop')
