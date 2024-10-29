@@ -61,6 +61,10 @@
   <build_export_depend>sensor_msgs</build_export_depend>
   <exec_depend>sensor_msgs</exec_depend>
 
+  <build_depend>os</build_depend>
+  <build_export_depend>os</build_export_depend>
+  <exec_depend>os</exec_depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
