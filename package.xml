@@ -65,9 +65,9 @@
   <build_export_depend>os</build_export_depend>
   <exec_depend>os</exec_depend>
 
-  <build_depend>picamera</build_depend>
-  <build_export_depend>picamera</build_export_depend>
-  <exec_depend>picamera</exec_depend>
+  <build_depend>picamera2</build_depend>
+  <build_export_depend>picamera2</build_export_depend>
+  <exec_depend>picamera2</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

@@ -3,7 +3,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import PointCloud
 from websockets.server import serve
-from picamera import PiCamera
+from picamera2 import Picamera2
 import websockets
 import asyncio
 import socket
@@ -54,8 +54,8 @@ async def camera_server(ip,stop):
     print('camera stopped')
 
 async def send_camera_feed(websocket, path):
-    camera = PiCamera()
-    camera.resolution = (640, 480)
+    camera = Picamera2()
+    camera.start()
     try:
         while True:
             # Capture the image from the camera as a byte stream
@@ -64,15 +64,10 @@ async def send_camera_feed(websocket, path):
             stream.seek(0)
             
             # Optionally, you can resize or modify the image using PIL
-            image = Image.open(stream)
-            
-            # Save the image into bytes
-            img_byte_array = io.BytesIO()
-            image.save(img_byte_array, format='JPEG')
-            img_data = img_byte_array.getvalue()
+            image = stream.read()
             
             # Send the image data to the client over WebSocket
-            await websocket.send(img_data)
+            await websocket.send(image)
             
             # Pause before capturing the next frame
             await asyncio.sleep(1)
