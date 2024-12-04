@@ -11,7 +11,7 @@ import threading
 import json
 import time
 import os
-from AriaPy import *
+
 global_stop = False
 msg = Twist()
 ping_thread = threading.Thread
