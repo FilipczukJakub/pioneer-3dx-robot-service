@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import rospy
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Int8
 from sensor_msgs.msg import PointCloud
 from websockets.server import serve
 import websockets
@@ -13,7 +14,8 @@ import time
 import os
 
 global_stop = False
-msg = Twist()
+vel = Twist()
+gripper_command = Int8()
 ping_thread = threading.Thread
 
 def toTwist(jsonString):
@@ -27,19 +29,27 @@ def toTwist(jsonString):
         local_msg.angular.z = jsonString["Angular"]["z"]
     return local_msg
 
-async def echo(websocket):
-    global msg
+async def message_Handler(websocket):
+    global vel
     global ping_thread
+    global gripper_command
     ping_thread = threading.Thread(target=ping_handler,args=(websocket,))
     ping_thread.start()
     while True:
         message = await websocket.recv()
         print(message)
-        jsonString = json.loads(message)
-        msg = toTwist(jsonString)
+        split_message = message.split('###')
+        if len(split_message) == 2 :
+            message_type = split_message[0]
+            jsonString = json.loads(split_message[1])
+            if 'gripper' == message_type:
+                print(jsonString)
+                # gripper_command = jsonString
+            elif 'move' == message_type:
+                vel = toTwist(jsonString)
 
 async def main_server(ip,stop):
-    async with websockets.serve(echo,'0.0.0.0',8765):
+    async with websockets.serve(message_Handler,'0.0.0.0',8765):
         print("server is listening on " + str(ip) + ":8765")
         await stop
     print('server stopped')
@@ -61,16 +71,25 @@ async def ping(websocket):
             break
 
 def controlled_move():
-    global msg
+    global vel
     global global_stop
     pub = rospy.Publisher("/RosAria/cmd_vel", Twist, queue_size=10)
     print('move service started')
     while not global_stop:
-        pub.publish(msg)
+        pub.publish(vel)
+        time.sleep(0.1)
+
+def controlled_gripper():
+    global gripper_command
+    global global_stop
+    pub = rospy.Publisher("/RosAria/gripper", Int8, queue_size=10)
+    print('gripper service started')
+    while not global_stop:
+        pub.publish(gripper_command)
         time.sleep(0.1)
 
 def broadcast_server(ip):
-    global msg
+    global vel
     global global_stop
     s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(('0.0.0.0',12345))
@@ -84,7 +103,7 @@ def broadcast_server(ip):
             s.sendto(ip.encode('ascii'),(adres[0],adres[1]))
         elif(message == 'stop'):
             print('emergancy stop')
-            msg = toTwist(0)
+            vel = toTwist(0)
 
 async def start_controlling_service():
     global global_stop
@@ -94,8 +113,11 @@ async def start_controlling_service():
 
     broadcast_thread = threading.Thread(target=broadcast_server,args=(ip,))  
     controlled_move_thread = threading.Thread(target=controlled_move,args=())
+    gripper_move_thread = threading.Thread(target=controlled_gripper,args=())
+
     broadcast_thread.start()
     controlled_move_thread.start()
+    gripper_move_thread.start()
     loop = asyncio.get_event_loop()
     stop = loop.create_future()
     loop.add_signal_handler(signal.SIGINT, stop.set_result, None)
