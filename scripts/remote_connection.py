@@ -15,7 +15,7 @@ import os
 
 global_stop = False
 vel = Twist()
-gripper_command = Int8()
+gripper_command = Int8(data=2)
 ping_thread = threading.Thread
 
 def toTwist(jsonString):
