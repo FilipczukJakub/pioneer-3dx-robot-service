@@ -44,7 +44,7 @@ async def message_Handler(websocket):
             jsonString = json.loads(split_message[1])
             if 'gripper' == message_type:
                 print(jsonString)
-                gripper_command = int(jsonString)
+                gripper_command.data = int(jsonString)
             elif 'move' == message_type:
                 vel = toTwist(jsonString)
 
